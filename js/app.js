@@ -13,8 +13,10 @@ let turn, winner, tie, board;
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll('.sqr');
 const messageEl = document.getElementById('message');
+//should board be an array?
 const boardEl = document.querySelector('.board');
-const resetBtnEl = document.querySelector('button');
+const resetBtnEl = document.getElementById('reset');
+// const resetBtnEl = document.querySelector<HTMLButtonElement>('#reset')!
 /*----------------------------- Event Listeners -----------------------------*/
 boardEl.addEventListener('click', handleClick);
 resetBtnEl.addEventListener('click', init);
@@ -24,7 +26,7 @@ function init() {
     turn = 1;
     winner = false;
     tie = false;
-    console.log(turn);
+    render();
 }
 init();
 function render() {
@@ -55,31 +57,39 @@ function updateMessage() {
         messageEl.textContent = `Congratulations! ${turn === 1 ? 'X' : 'O'} wins! `;
     }
 }
-// function placePiece(idx) {
-//   board[idx] = turn
-// }
-// function handleClick(evt) {
-//   console.log(evt.target.id)
-//   const sqIdx = parseInt(evt.target.id.replace('sq', ''))
-//   if (isNaN(sqIdx) || board[sqIdx] || winner) return
-//   placePiece(sqIdx)
-//   checkForTie()
-//   checkForWinner()
-//   switchPlayerTurn()
-//   render()
-// }
-// function checkForTie() {
-//   if (board.includes(null)) return
-//   tie = true
-// }
-// function checkForWinner() {
-//   winningCombos.forEach(combo => {
-//     if (Math.abs(board[combo[0]] + board[combo[1]] + board[combo[2]]) === 3) {
-//       winner = true
-//     }
-//   })
-// }
-// function switchPlayerTurn() {
-//   if (winner) return
-//   turn *= -1
-// }
+function handleClick(evt) {
+    if (!(evt.target instanceof HTMLElement))
+        return;
+    const sqIdx = parseInt(evt.target.id.replace('sq', ''));
+    if (isNaN(sqIdx) || board[sqIdx] || winner)
+        return;
+    placePiece(sqIdx);
+    checkForTie();
+    checkForWinner();
+    switchPlayerTurn();
+    render();
+}
+function placePiece(idx) {
+    board[idx] = turn;
+}
+function checkForTie() {
+    if (!board.includes(0)) {
+        tie = true;
+    }
+}
+function checkForWinner() {
+    winningCombos.forEach(function (combo) {
+        let sum = 0;
+        combo.forEach(function (sqr) {
+            sum += board[sqr];
+        });
+        sum = Math.abs(sum);
+        if (sum === 3)
+            winner = true;
+    });
+}
+function switchPlayerTurn() {
+    if (winner === true)
+        return;
+    turn *= -1;
+}
