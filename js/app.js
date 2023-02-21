@@ -13,19 +13,48 @@ let turn, winner, tie, board;
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll('.sqr');
 const messageEl = document.getElementById('message');
+const boardEl = document.querySelector('.board');
 const resetBtnEl = document.querySelector('button');
 /*----------------------------- Event Listeners -----------------------------*/
-// document.querySelector('.board').addEventListener('click', handleClick)
-// resetBtnEl.addEventListener('click', init)
+boardEl.addEventListener('click', handleClick);
+resetBtnEl.addEventListener('click', init);
 // /*-------------------------------- Functions --------------------------------*/
-// function init(): void {
-//   board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-//   turn = 1
-//   winner = false
-//   tie = false
-//   console.log(turn)
-// }
-// init()
+function init() {
+    board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    turn = 1;
+    winner = false;
+    tie = false;
+    console.log(turn);
+}
+init();
+function render() {
+    updateBoard();
+    updateMessage();
+}
+function updateBoard() {
+    board.forEach((sqr, idx) => {
+        if (sqr === 1) {
+            squareEls[idx].textContent = 'X';
+        }
+        else if (sqr === -1) {
+            squareEls[idx].textContent = 'O';
+        }
+        else {
+            squareEls[idx].textContent = '';
+        }
+    });
+}
+function updateMessage() {
+    if (!winner && !tie) {
+        messageEl.textContent = `It's ${turn === 1 ? 'X' : 'O'}'s turn!`;
+    }
+    else if (!winner && tie) {
+        messageEl.textContent = "Cat's game! Meow!!!";
+    }
+    else {
+        messageEl.textContent = `Congratulations! ${turn === 1 ? 'X' : 'O'} wins! `;
+    }
+}
 // function placePiece(idx) {
 //   board[idx] = turn
 // }
@@ -53,28 +82,4 @@ const resetBtnEl = document.querySelector('button');
 // function switchPlayerTurn() {
 //   if (winner) return
 //   turn *= -1
-// }
-// function render() {
-//   updateBoard()
-//   updateMessage()
-// }
-// function updateBoard() {
-//   board.forEach((boardVal, idx) => {
-//     if (boardVal === 1) {
-//       squareEls[idx].textContent = 'X'
-//     } else if (boardVal === -1) {
-//       squareEls[idx].textContent = 'O'
-//     } else {
-//       squareEls[idx].textContent = ''
-//     }
-//   })
-// }
-// function updateMessage() {
-//   if (!winner && !tie) {
-//     messageEl.textContent = `It's ${turn === 1 ? 'X' : 'O'}'s turn!`
-//   } else if (!winner && tie) {
-//     messageEl.textContent = "Cat's game! Meow!!!"
-//   } else {
-//     messageEl.textContent = `Congratulations! ${turn === 1 ? 'X' : 'O'} wins! `
-//   }
 // }
