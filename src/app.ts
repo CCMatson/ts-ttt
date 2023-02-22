@@ -13,15 +13,19 @@ let turn: number, winner: boolean, tie: boolean, board: (number)[]
 
 /*------------------------ Cached Element References ------------------------*/
 const squareEls = document.querySelectorAll<HTMLDivElement>('.sqr')
+//get element by ID use "as"
 const messageEl = document.getElementById('message')! as HTMLHeadingElement
 //should board be an array?
-const boardEl = document.querySelector('.board')! as HTMLElement
+// const boardEl = document.querySelector('.board')! as HTMLElement
+const boardEl = document.querySelector<HTMLDivElement>('.board')! 
 const resetBtnEl = document.getElementById('reset') as HTMLButtonElement
 // const resetBtnEl = document.querySelector<HTMLButtonElement>('#reset')!
 
 /*----------------------------- Event Listeners -----------------------------*/
+
 boardEl.addEventListener('click', handleClick)
 resetBtnEl.addEventListener('click', init)
+
 // /*-------------------------------- Functions --------------------------------*/
 
 function init(): void {
